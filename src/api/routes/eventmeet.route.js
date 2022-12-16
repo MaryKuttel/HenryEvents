@@ -1,7 +1,7 @@
 
 const {Router} = require("express");
 
-const {getNames, postEventMeet, getEventMeetAll} = require("../controllers/eventmeet.controller")
+const {postEventMeet, getEventMeetAll} = require("../controllers/eventmeet.controller")
 
 
 const router = Router();
@@ -46,5 +46,13 @@ router.post("/", async (req, res)=>{
         res.status(500).json(error)
     }
 })
+
+router.delete("/:id", async (req, res)=>{
+    try {
+        
+    } catch (error) {
+        res.status(500).json(error)
+    }
+} )
 
 module.exports = {router}
