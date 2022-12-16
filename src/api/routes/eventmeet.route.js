@@ -1,19 +1,34 @@
 
 const {Router} = require("express");
 
-const {getNames, postEventMeet} = require("../controllers/eventmeet.controller")
+const {getNames, postEventMeet, getEventMeetAll} = require("../controllers/eventmeet.controller")
 
 
 const router = Router();
 
 
-router.get('/', (req, res)=>{
+router.get('/', async (req, res)=>{
     try {
-        res.status(200).json("holis. ¿va?")
+
+        const getEvent = await getEventMeetAll()
+
+        if(getEvent) res.status(200).json(getEvent)
+        else throw new Error("No hay eventos del tipo Meet")
+
     } catch (error) {
-        
+        res.status(500).json(error)
     }
 
+})
+
+router.get("/:id", async (req, res)=>{
+    try {
+
+        const id = req.params.id
+        
+    } catch (error) {
+        res.status(500).json(error)
+    }
 })
 
 
