@@ -1,7 +1,7 @@
 const EventsMeet = require("../models/EventsMeet");
 
 // ┌────────────────────────────┐
-// │         RUTA POST         │
+// │         RUTA POST          │
 // └────────────────────────────┘
 
 
@@ -18,12 +18,29 @@ const postEventMeet = async (body) =>{
 
         await newEventMeet.save()
 
-        console.log(newEventMeet)
 
         return "New EventMeet Created"
 
 }
 
+
+// ┌────────────────────────────┐
+// │         RUTAS GET          │
+// └────────────────────────────┘
+
+
+const getEventMeetAll = async () =>{
+    const eventmeet = await EventsMeet.find()
+
+    return eventmeet
+}
+
+const getEventMeetID = async (id)=>{
+
+}
+
 module.exports = {
-    postEventMeet
+    postEventMeet,
+    getEventMeetAll,
+    getEventMeetID
 }

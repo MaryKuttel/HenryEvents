@@ -2,9 +2,9 @@ const { Schema, model } = require("mongoose");
 
 const schema = new Schema(
     {
-        id_event_talk:{
+        id_news:{
             type: Schema.Types.ObjectId,
-            reference: "EventsTalks"
+            reference: "News"
         },
         comment:{
             type: String,
@@ -31,4 +31,4 @@ const schema = new Schema(
 	}
 )
 
-module.exports = model("CommentsTalk", schema);
+module.exports = model("CommentsNews", schema);

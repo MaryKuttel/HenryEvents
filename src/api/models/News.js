@@ -6,7 +6,7 @@ const schema = new Schema(
             type: String,
 			required: true,
         },
-        date: {
+       date: {
             type: Date,
             default: () => Date.now(),
           },
@@ -27,10 +27,10 @@ const schema = new Schema(
         link:{
             type: String
         },
-        comment_meet:{
+        comment_talk:{
             type: [{
                 type: Schema.Types.ObjectId,
-                reference: "CommentsMeet"
+                reference: "CommentsNews"
             },]
         }
 
@@ -41,4 +41,4 @@ const schema = new Schema(
 	}
 )
 
-module.exports = model("EventsMeet", schema);
+module.exports = model("News", schema);
