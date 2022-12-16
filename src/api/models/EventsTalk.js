@@ -23,6 +23,15 @@ const schema = new Schema(
                 type: Schema.Types.ObjectId,
                 reference: "Users"
             },]
+        },
+        link:{
+            type: String
+        },
+        comment_talk:{
+            type: [{
+                type: Schema.Types.ObjectId,
+                reference: "CommentsTalk"
+            },]
         }
 
 

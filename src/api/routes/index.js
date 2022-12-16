@@ -1,8 +1,9 @@
-import { Router } from 'express'
+const { Router } = require('express');
 
-import { readdirSync } from 'fs'
+const { readdirSync } = require('fs')
 
 const router = Router()
+
 
 // route current
 const PATH_ROUTER = `${__dirname}` 
@@ -13,6 +14,10 @@ const cleanFileName = (fileName) => {
     return file
 }
 
+const initialFunction = (archivos, cleanName) => {
+    console.log('Route -> ...', cleanName)
+    router.use(`/${cleanName}`, archivos.router)
+}
 
 // I use readdirSync to read all the files that are in my directory, and then import
 // them and use my route, it saves me having to put a route.use('/fileName') for each
@@ -20,12 +25,11 @@ const cleanFileName = (fileName) => {
 readdirSync(PATH_ROUTER).filter(fileName => {
     const cleanName = cleanFileName(fileName)
     if(cleanName !== 'index') {
-        import(`./${cleanName}.routes`).then(modelRouter => {
-            console.log('Route -> ...', cleanName)
-            router.use(`/${cleanName}`, modelRouter.router)
-        })
+      const archivos = require(`./${cleanName}.route`)
+        initialFunction(archivos, cleanName)
+        // router.use(`/${cleanName}`, archivos.router)
     }
+    console.log(cleanName)
 })
 
-
-export default router;
+module.exports = router;
