@@ -1,7 +1,7 @@
 
 const {Router} = require("express");
 
-const {postEventMeet, getEventMeetAll} = require("../controllers/eventmeet.controller")
+const {postEventMeet, getEventMeetAll, deleteEventMeet} = require("../controllers/eventmeet.controller")
 
 
 const router = Router();
@@ -49,7 +49,12 @@ router.post("/", async (req, res)=>{
 
 router.delete("/:id", async (req, res)=>{
     try {
-        
+        const id = req.params.id
+
+        const eliminado = await deleteEventMeet(id)
+
+        res.status(200).json(eliminado)
+
     } catch (error) {
         res.status(500).json(error)
     }

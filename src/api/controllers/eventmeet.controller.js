@@ -36,11 +36,35 @@ const getEventMeetAll = async () =>{
 }
 
 const getEventMeetID = async (id)=>{
+    if(id){
+        const eventmeet = await EventsMeet.findById(id)
+
+        return eventmeet
+    }else{
+        throw new Error("ID no ingresado, por favor corroborar")
+    }
+}
+
+const deleteEventMeet = async (id) =>{
+
+    if(id){
+
+    const eliminadito = await EventsMeet.findByIdAndDelete(id)
+
+    if(eliminadito) return "Evento eliminado correctamente"
+    else throw new Error("Error al eliminar el evento, por favor corroborar ID")
+    }else{
+        throw new Error("ID no recibido, por favor corroborar")
+    }
+    
+
 
 }
+
 
 module.exports = {
     postEventMeet,
     getEventMeetAll,
-    getEventMeetID
+    getEventMeetID,
+    deleteEventMeet
 }
