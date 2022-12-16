@@ -2,11 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const schema = new Schema(
     {
-        first_name:{
-            type: String,
-			required: true,
-        },
-        last_name:{
+        nickName:{
             type: String,
 			required: true,
         },
@@ -32,6 +28,12 @@ const schema = new Schema(
                 type: Schema.Types.ObjectId,
                 reference: "EventsTalks"
             },]
+		},
+		admin:{
+			type: Boolean
+		},
+		darkMood:{
+			type: Boolean
 		}
 
 
