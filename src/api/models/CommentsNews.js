@@ -11,7 +11,7 @@ const schema = new Schema(
 			required: true,
         },
         response: {
-            type: [Types.ObjectId],
+            type: [Schema.Types.ObjectId],
             ref: 'Response'
         },
         user_comment:{
