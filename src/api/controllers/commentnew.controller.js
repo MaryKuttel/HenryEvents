@@ -1,14 +1,14 @@
-const EventsMeet = require("../models/EventsMeet");
+const CommentsNews = require("../models/CommentsNews");
 
 // ┌────────────────────────────┐
 // │         RUTA POST          │
 // └────────────────────────────┘
 
 
-const postEventMeet = async (body) =>{
+const postCommentNew = async (body) =>{
         const {title, description, date, user_event, people_asist, link, comment_meet} = body
 
-       const newEventMeet = new EventsMeet({title,
+       const newEventMeet = new CommentsNews({title,
         description,
         date,
         user_event,
@@ -29,8 +29,8 @@ const postEventMeet = async (body) =>{
 // └────────────────────────────┘
 
 
-const getEventMeetAll = async () =>{
-    const eventmeet = await EventsMeet.find()
+const getCommentNewAll = async () =>{
+    const eventmeet = await CommentsNews.find()
 
     const mapEvent = eventmeet.map(curr =>{
         return {
@@ -43,9 +43,9 @@ const getEventMeetAll = async () =>{
     return mapEvent
 }
 
-const getEventMeetID = async (id)=>{
+const getECommentNewID = async (id)=>{
     if(id){
-        const eventmeet = await EventsMeet.findById(id)
+        const eventmeet = await CommentsNews.findById(id)
 
         return eventmeet
     }else{
@@ -58,11 +58,11 @@ const getEventMeetID = async (id)=>{
 // └────────────────────────────┘
 
 
-const deleteEventMeet = async (id) =>{
+const deleteCommentNew = async (id) =>{
 
     if(id){
 
-    const eliminadito = await EventsMeet.findByIdAndDelete(id)
+    const eliminadito = await CommentsNews.findByIdAndDelete(id)
 
     if(eliminadito) return "Evento eliminado correctamente"
     else throw new Error("Error al eliminar el evento, por favor corroborar ID")
@@ -77,9 +77,9 @@ const deleteEventMeet = async (id) =>{
 // └────────────────────────────┘
 
 
-const updateEventMeet = async(id, body) =>{
+const updateCommentNew = async(id, body) =>{
 
-    await EventsMeet.findByIdAndUpdate(id, body)
+    await CommentsNews.findByIdAndUpdate(id, body)
     
    return "Evento Actualizado Correctamente"
 
@@ -87,9 +87,9 @@ const updateEventMeet = async(id, body) =>{
 
 
 module.exports = {
-    postEventMeet,
-    getEventMeetAll,
-    getEventMeetID,
-    deleteEventMeet,
-    updateEventMeet
+    postCommentNew,
+    getCommentNewAll,
+    getCommentNewID,
+    deleteCommentNew,
+    updateCommentNew
 }

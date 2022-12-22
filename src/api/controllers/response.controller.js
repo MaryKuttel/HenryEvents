@@ -1,14 +1,14 @@
-const EventsMeet = require("../models/EventsMeet");
+const Response = require("../models/Response");
 
 // ┌────────────────────────────┐
 // │         RUTA POST          │
 // └────────────────────────────┘
 
 
-const postEventMeet = async (body) =>{
+const postResponse = async (body) =>{
         const {title, description, date, user_event, people_asist, link, comment_meet} = body
 
-       const newEventMeet = new EventsMeet({title,
+       const newResponse = new Response({title,
         description,
         date,
         user_event,
@@ -16,10 +16,10 @@ const postEventMeet = async (body) =>{
         link,
         comment_meet})
 
-        await newEventMeet.save()
+        await newResponse.save()
 
 
-        return "New EventMeet Created"
+        return "New Response Created"
 
 }
 
@@ -29,10 +29,10 @@ const postEventMeet = async (body) =>{
 // └────────────────────────────┘
 
 
-const getEventMeetAll = async () =>{
-    const eventmeet = await EventsMeet.find()
+const getResponseAll = async () =>{
+    const Response = await EventsMeet.find()
 
-    const mapEvent = eventmeet.map(curr =>{
+    const mapEvent = Response.map(curr =>{
         return {
             id: curr.id,
             title: curr.title,
@@ -43,11 +43,11 @@ const getEventMeetAll = async () =>{
     return mapEvent
 }
 
-const getEventMeetID = async (id)=>{
+const getResponseID = async (id)=>{
     if(id){
-        const eventmeet = await EventsMeet.findById(id)
+        const Response = await EventsMeet.findById(id)
 
-        return eventmeet
+        return Response
     }else{
         throw new Error("ID no ingresado, por favor corroborar")
     }
@@ -58,7 +58,7 @@ const getEventMeetID = async (id)=>{
 // └────────────────────────────┘
 
 
-const deleteEventMeet = async (id) =>{
+const deleteResponse = async (id) =>{
 
     if(id){
 
@@ -77,7 +77,7 @@ const deleteEventMeet = async (id) =>{
 // └────────────────────────────┘
 
 
-const updateEventMeet = async(id, body) =>{
+const updateResponse = async(id, body) =>{
 
     await EventsMeet.findByIdAndUpdate(id, body)
     
@@ -87,9 +87,9 @@ const updateEventMeet = async(id, body) =>{
 
 
 module.exports = {
-    postEventMeet,
-    getEventMeetAll,
-    getEventMeetID,
-    deleteEventMeet,
-    updateEventMeet
+    postResponse,
+    getResponseAll,
+    getResponseID,
+    deleteResponse,
+    updateResponse
 }
