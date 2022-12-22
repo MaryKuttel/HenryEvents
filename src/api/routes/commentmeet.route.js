@@ -1,5 +1,6 @@
 
 const {Router} = require("express");
+const { getCommentMeetAll, getCommentMeetID } = require("../controllers/commentmeet.controller");
 
 
 
@@ -10,10 +11,10 @@ const router = Router();
 router.get('/', async (req, res)=>{
     try {
 
-        const getEvent = await getEventMeetAll()
+        const getCommentM = await getCommentMeetAll()
 
-        if(getEvent) res.status(200).json(getEvent)
-        else throw new Error("No hay eventos del tipo Meet")
+        if(getCommentM) res.status(200).json(getCommentM)
+        else throw new Error("No hay comentarios del tipo Meet")
 
     } catch (error) {
         res.status(500).json(error)
@@ -27,8 +28,8 @@ router.get("/:id", async (req, res)=>{
         const id = req.params.id
         if(id){
 
-            const getEventID = getEventMeetID(id)
-            if(getEventID) res.status(200).json(getEventID)
+            const getComMID = getCommentMeetID(id)
+            if(getComMID) res.status(200).json(getComMID)
             else throw new Error("ID no válido, por favor revisar")
 
         }else{
