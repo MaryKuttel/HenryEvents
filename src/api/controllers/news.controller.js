@@ -1,14 +1,14 @@
-const EventsMeet = require("../models/EventsMeet");
+const News = require("../models/News");
 
 // ┌────────────────────────────┐
 // │         RUTA POST          │
 // └────────────────────────────┘
 
 
-const postEventMeet = async (body) =>{
+const postNew = async (body) =>{
         const {title, description, date, user_event, people_asist, link, comment_meet} = body
 
-       const newEventMeet = new EventsMeet({title,
+       const newNew = new News({title,
         description,
         date,
         user_event,
@@ -16,10 +16,10 @@ const postEventMeet = async (body) =>{
         link,
         comment_meet})
 
-        await newEventMeet.save()
+        await newNew.save()
 
 
-        return "New EventMeet Created"
+        return "New News Created"
 
 }
 
@@ -29,10 +29,10 @@ const postEventMeet = async (body) =>{
 // └────────────────────────────┘
 
 
-const getEventMeetAll = async () =>{
-    const eventmeet = await EventsMeet.find()
+const getNewAll = async () =>{
+    const New = await News.find()
 
-    const mapEvent = eventmeet.map(curr =>{
+    const mapEvent = New.map(curr =>{
         return {
             id: curr.id,
             title: curr.title,
@@ -43,11 +43,11 @@ const getEventMeetAll = async () =>{
     return mapEvent
 }
 
-const getEventMeetID = async (id)=>{
+const getNewID = async (id)=>{
     if(id){
-        const eventmeet = await EventsMeet.findById(id)
+        const New = await News.findById(id)
 
-        return eventmeet
+        return New
     }else{
         throw new Error("ID no ingresado, por favor corroborar")
     }
@@ -58,11 +58,11 @@ const getEventMeetID = async (id)=>{
 // └────────────────────────────┘
 
 
-const deleteEventMeet = async (id) =>{
+const deleteNew = async (id) =>{
 
     if(id){
 
-    const eliminadito = await EventsMeet.findByIdAndDelete(id)
+    const eliminadito = await News.findByIdAndDelete(id)
 
     if(eliminadito) return "Evento eliminado correctamente"
     else throw new Error("Error al eliminar el evento, por favor corroborar ID")
@@ -77,9 +77,9 @@ const deleteEventMeet = async (id) =>{
 // └────────────────────────────┘
 
 
-const updateEventMeet = async(id, body) =>{
+const updateNew = async(id, body) =>{
 
-    await EventsMeet.findByIdAndUpdate(id, body)
+    await News.findByIdAndUpdate(id, body)
     
    return "Evento Actualizado Correctamente"
 
@@ -87,9 +87,9 @@ const updateEventMeet = async(id, body) =>{
 
 
 module.exports = {
-    postEventMeet,
-    getEventMeetAll,
-    getEventMeetID,
-    deleteEventMeet,
-    updateEventMeet
+    postNew,
+    getNewAll,
+    getNewID,
+    deleteNew,
+    updateNew
 }

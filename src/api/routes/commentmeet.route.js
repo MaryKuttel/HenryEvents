@@ -1,7 +1,7 @@
 
 const {Router} = require("express");
 
-const {postEventMeet, getEventMeetAll, deleteEventMeet, updateEventMeet, getEventMeetID} = require("../controllers/eventmeet.controller")
+
 
 
 const router = Router();
