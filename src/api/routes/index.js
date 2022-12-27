@@ -24,12 +24,18 @@ const initialFunction = (archivos, cleanName) => {
 // file that exists in my routes folder
 readdirSync(PATH_ROUTER).filter(fileName => {
     const cleanName = cleanFileName(fileName)
-    if(cleanName !== 'index') {
+    if(cleanName !== 'index' && cleanName !== "admin" && cleanName !== "validate-token") {
       const archivos = require(`./${cleanName}.route`)
         initialFunction(archivos, cleanName)
         // router.use(`/${cleanName}`, archivos.router)
     }
+    // else if(cleanName == "admin"){
+    //     const validate = require("./validate-token.route")
+    //     const admin = require("./admin.route")
+    //     router.use("/admin", validate, admin)
+    // }
     console.log(cleanName)
 })
+
 
 module.exports = router;
