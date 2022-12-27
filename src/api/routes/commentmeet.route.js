@@ -1,6 +1,6 @@
 
 const {Router} = require("express");
-const { getCommentMeetAll, getCommentMeetID } = require("../controllers/commentmeet.controller");
+const { getCommentMeetAll, getCommentMeetID, postCommentMeet, deleteCommentMeet, updateCommentMeet } = require("../controllers/commentmeet.controller");
 
 
 
@@ -49,7 +49,7 @@ router.post("/", async (req, res)=>{
         if(!title || !description){
             res.status(409).json("Falta información requerida, por favor revisar")
         }else{
-            res.status(200).json(await postEventMeet(req.body))
+            res.status(200).json(await postCommentMeet(req.body))
         }
 
     } catch (error) {
@@ -61,7 +61,7 @@ router.delete("/:id", async (req, res)=>{
     try {
         const id = req.params.id
 
-        const eliminado = await deleteEventMeet(id)
+        const eliminado = await deleteCommentMeet(id)
 
         res.status(200).json(eliminado)
 
@@ -78,7 +78,7 @@ router.put("/:id", async (req, res)=>{
         const data = req.body
 
         if(id && data){
-            const updated = await updateEventMeet(id, data)
+            const updated = await updateCommentMeet(id, data)
             res.status(200).json(updated)
         }else{
             res.status(409).json("ID o Datos no encontrado.")
