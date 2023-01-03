@@ -1,7 +1,7 @@
 
 const {Router} = require("express");
 
-const {postEventMeet, getEventMeetAll, deleteEventMeet, updateEventMeet, getEventMeetID} = require("../controllers/eventmeet.controller")
+const {postNew, getNewAll, deleteNew, updateNew, getNewID} = require("../controllers/news.controller")
 
 
 const router = Router();
@@ -10,10 +10,10 @@ const router = Router();
 router.get('/', async (req, res)=>{
     try {
 
-        const getEvent = await getEventMeetAll()
+        const getEvent = await getNewAll()
 
         if(getEvent) res.status(200).json(getEvent)
-        else throw new Error("No hay eventos del tipo Meet")
+        else throw new Error("No hay eventos actualmente")
 
     } catch (error) {
         res.status(500).json(error)
@@ -25,14 +25,16 @@ router.get("/:id", async (req, res)=>{
     try {
 
         const id = req.params.id
-        if(id){
+        const type = req.body.type
+        
+        if(id && type){
 
-            const getEventID = getEventMeetID(id)
+            const getEventID = await getNewID(id, type)
             if(getEventID) res.status(200).json(getEventID)
             else throw new Error("ID no válido, por favor revisar")
 
         }else{
-            res.status(409).json("ID no ingresado.")
+            res.status(409).json("ID o Tipo de Evento no ingresado.")
         }
         
     } catch (error) {
@@ -43,12 +45,12 @@ router.get("/:id", async (req, res)=>{
 
 router.post("/", async (req, res)=>{
     try {
-        const {title, description} = req.body
+        const {title, description, type} = req.body
 
-        if(!title || !description){
+        if(!title || !description || !type){
             res.status(409).json("Falta información requerida, por favor revisar")
         }else{
-            res.status(200).json(await postEventMeet(req.body))
+            res.status(200).json(await postNew(req.body))
         }
 
     } catch (error) {
@@ -59,8 +61,9 @@ router.post("/", async (req, res)=>{
 router.delete("/:id", async (req, res)=>{
     try {
         const id = req.params.id
+        const type= req.body.type
 
-        const eliminado = await deleteEventMeet(id)
+        const eliminado = await deleteNew(id, type)
 
         res.status(200).json(eliminado)
 
@@ -77,7 +80,7 @@ router.put("/:id", async (req, res)=>{
         const data = req.body
 
         if(id && data){
-            const updated = await updateEventMeet(id, data)
+            const updated = await updateNew(id, data)
             res.status(200).json(updated)
         }else{
             res.status(409).json("ID o Datos no encontrado.")
