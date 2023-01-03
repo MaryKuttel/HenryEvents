@@ -32,6 +32,10 @@ const schema = new Schema(
                 type: Schema.Types.ObjectId,
                 reference: "CommentsTalk"
             },]
+        }, 
+        type:{
+            type: String,
+            default: talk
         }
 
 

@@ -1,4 +1,5 @@
 const CommentsTalk = require("../models/CommentsTalk");
+const Users = require("../models/Users");
 
 // ┌────────────────────────────┐
 // │         RUTA POST          │
@@ -6,17 +7,11 @@ const CommentsTalk = require("../models/CommentsTalk");
 
 
 const postCommentTalk = async (body) =>{
-        const {title, description, date, user_event, people_asist, link, comment_meet} = body
+        const {id_event_talk,comment, date, user_comment} = body
 
-       const newEventMeet = new CommentsTalk({title,
-        description,
-        date,
-        user_event,
-        people_asist,
-        link,
-        comment_meet})
+       const newCommentTalk = new CommentsTalk({id_event_talk, comment, date, user_comment})
 
-        await newEventMeet.save()
+        await newCommentTalk.save()
 
 
         return "New EventMeet Created"
@@ -29,18 +24,22 @@ const postCommentTalk = async (body) =>{
 // └────────────────────────────┘
 
 
-const getCommentTalkAll = async () =>{
-    const eventmeet = await CommentsTalk.find()
+const getCommentTalkAll = async (id_event_talk) =>{
+    const commentTalk = await CommentsTalk.find({id_event_talk: id_event_talk})
 
-    const mapEvent = eventmeet.map(curr =>{
+    const mapComment = commentTalk.map(async curr =>{
+
+        let nameUser = await Users.findById(curr.user_comment).nickName
+
+        console.log(nameUser)
+
         return {
-            id: curr.id,
-            title: curr.title,
+            comment: curr.title,
             date: curr.date
         }
     })
 
-    return mapEvent
+    return mapComment
 }
 
 const getCommentTalkID = async (id)=>{

@@ -11,7 +11,8 @@ const router = Router();
 router.get('/', async (req, res)=>{
     try {
 
-        const getCommentM = await getCommentMeetAll()
+        let id = req.body.id
+        const getCommentM = await getCommentMeetAll(id)
 
         if(getCommentM) res.status(200).json(getCommentM)
         else throw new Error("No hay comentarios del tipo Meet")
@@ -44,9 +45,9 @@ router.get("/:id", async (req, res)=>{
 
 router.post("/", async (req, res)=>{
     try {
-        const {title, description} = req.body
+        const {id_event_meet,comment, date, user_comment} = req.body
 
-        if(!title || !description){
+        if(!id_event_meet || !comment || !date || !user_comment){
             res.status(409).json("Falta información requerida, por favor revisar")
         }else{
             res.status(200).json(await postCommentMeet(req.body))
@@ -71,23 +72,23 @@ router.delete("/:id", async (req, res)=>{
 } )
 
 
-router.put("/:id", async (req, res)=>{
-    try {
+// router.put("/:id", async (req, res)=>{
+//     try {
         
-        const id = req.params.id
-        const data = req.body
+//         const id = req.params.id
+//         const data = req.body
 
-        if(id && data){
-            const updated = await updateCommentMeet(id, data)
-            res.status(200).json(updated)
-        }else{
-            res.status(409).json("ID o Datos no encontrado.")
-        }
+//         if(id && data){
+//             const updated = await updateCommentMeet(id, data)
+//             res.status(200).json(updated)
+//         }else{
+//             res.status(409).json("ID o Datos no encontrado.")
+//         }
 
 
-    } catch (error) {
-        res.status(500).json(error)
-    }
-})
+//     } catch (error) {
+//         res.status(500).json(error)
+//     }
+// })
 
 module.exports = {router}
