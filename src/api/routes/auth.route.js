@@ -54,7 +54,7 @@ router.post("/login", async (req, res)=>{
     }, process.env.TOKEN_SECRETO)
 
 
-    res.header("auth-token", token).json({mensaje: "Bienvenido!", token: token})
+    res.status(200).json({mensaje: "Bienvenido!", token: token})
 
 })
 
@@ -87,13 +87,33 @@ router.post("/register", async (req, res) =>{
         password: password
     })
 
+    
+
     try {
 
         const userDB = await user.save()
+        
+        // configuracion de email
 
-        res.json({
-            data: userDB
-        })
+        const transport = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+                user: process.env.user,
+                pass: process.env.pass,
+         },
+    });
+
+        let msg = await transport.sendMail({
+            to: email,
+            subject: "Please confirm your account",
+            html: `<h1>Email Confirmation</h1>
+                <h2>Hello ${user.nickName}</h2>
+                <p>Thank you for register. Please confirm your email by clicking on the following link</p>
+                <a href="https://backend-gamematch.herokuapp.com/users/confirm/${user._id}"> Click here</a>
+                </div>`,
+    });
+        if(userDB)  res.json(userDB)
+        else throw new Error("Usuario ya creado. Logeate!");
 
         
     } catch (error) {
@@ -102,6 +122,24 @@ router.post("/register", async (req, res) =>{
 
 })
 
+
+
+router.get("/", async (req, res)=>{
+
+    try {
+       
+        const users = await User.find()
+        if(users) res.status(200).json(users)
+        else res.status(404).json("No se encontraron usuarios")
+    
+    } catch (error) {
+        
+        res.status(400).json(error)
+
+    }
+    
+
+})
 
 
 module.exports = {router}

@@ -34,6 +34,9 @@ const schema = new Schema(
 		},
 		darkMood:{
 			type: Boolean
+		},
+		image:{
+			type: String
 		}
 
 

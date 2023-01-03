@@ -6,15 +6,13 @@ const EventsMeet = require("../models/EventsMeet");
 
 
 const postEventMeet = async (body) =>{
-        const {title, description, date, user_event, people_asist, link, comment_meet} = body
+        const {title, description, date, user_event, link} = body
 
        const newEventMeet = new EventsMeet({title,
         description,
         date,
         user_event,
-        people_asist,
-        link,
-        comment_meet})
+        link})
 
         await newEventMeet.save()
 
@@ -84,6 +82,19 @@ const updateEventMeet = async(id, body) =>{
    return "Evento Actualizado Correctamente"
 
 }
+
+
+// ┌────────────────────────────┐
+// │         RUTA ARRAYS        │
+// └────────────────────────────┘
+
+// const arrCommMeets = async () =>{
+
+
+
+
+// }
+
 
 
 module.exports = {

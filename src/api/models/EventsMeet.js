@@ -32,6 +32,10 @@ const schema = new Schema(
                 type: Schema.Types.ObjectId,
                 reference: "CommentsMeet"
             },]
+        },
+        type:{
+            type: String,
+            default: meeting
         }
 
 
