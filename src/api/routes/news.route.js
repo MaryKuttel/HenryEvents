@@ -27,14 +27,14 @@ router.get("/:id", async (req, res)=>{
         const id = req.params.id
         const type = req.body.type
         
-        if(id){
+        if(id && type){
 
-            const getEventID = getNewID(id, type)
+            const getEventID = await getNewID(id, type)
             if(getEventID) res.status(200).json(getEventID)
             else throw new Error("ID no válido, por favor revisar")
 
         }else{
-            res.status(409).json("ID no ingresado.")
+            res.status(409).json("ID o Tipo de Evento no ingresado.")
         }
         
     } catch (error) {
