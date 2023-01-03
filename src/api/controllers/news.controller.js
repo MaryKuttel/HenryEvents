@@ -106,6 +106,8 @@ const getNewAll = async () =>{
 
     return ordenados
 
+}else{
+    return "No hay Eventos"
 }
     
 
@@ -154,14 +156,34 @@ const getNewID = async (id, type)=>{
 // └────────────────────────────┘
 
 
-const deleteNew = async (id) =>{
+const deleteNew = async (id, type) =>{
 
-    if(id){
+    if(id && type){
+        if(type === "meeting"){
+            
+            const eliminadito = await EventsMeet.findByIdAndDelete(id)
 
-    const eliminadito = await News.findByIdAndDelete(id)
+            console.log("Delete en tipo meeting",eliminadito)
 
-    if(eliminadito) return "Evento eliminado correctamente"
-    else throw new Error("Error al eliminar el evento, por favor corroborar ID")
+            if(eliminadito === null) return "Error al eliminar el evento, por favor corroborar ID"
+            else return "Evento eliminado correctamente"
+
+        }else if(type === "talk"){
+
+            const eliminadito = await EventsTalk.findByIdAndDelete(id)
+
+            console.log("Delete en tipo talk", eliminadito)
+
+            if(eliminadito === null) return "Error al eliminar el evento, por favor corroborar ID"
+            else return "Evento eliminado correctamente"
+
+
+    } else{
+
+            return "Tipo de Evento incorrecto. Por favor revisar"
+            
+        }
+    
     }else{
         throw new Error("ID no recibido, por favor corroborar")
     }
