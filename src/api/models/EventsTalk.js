@@ -35,7 +35,7 @@ const schema = new Schema(
         }, 
         type:{
             type: String,
-            default: talk
+            default: "talk"
         }
 
 

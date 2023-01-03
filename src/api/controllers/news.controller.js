@@ -1,4 +1,5 @@
-const News = require("../models/News");
+const EventsTalk = require("../models/EventsTalk");
+const EventsMeet = require("../models/EventMeet");
 
 // ┌────────────────────────────┐
 // │         RUTA POST          │
@@ -6,7 +7,7 @@ const News = require("../models/News");
 
 
 const postNew = async (body) =>{
-        const {title, description, date, user_event, people_asist, link, comment_meet} = body
+        const {title, description, date, user_event, people_asist, link, comment_meet, type} = body
 
        const newNew = new News({title,
         description,
@@ -30,9 +31,11 @@ const postNew = async (body) =>{
 
 
 const getNewAll = async () =>{
-    const New = await News.find()
 
-    const mapEvent = New.map(curr =>{
+    const meetings = EventsMeet.find()
+    const talks = EventsTalk.find()
+
+    const mapEvent = meetings.map(curr =>{
         return {
             id: curr.id,
             title: curr.title,
