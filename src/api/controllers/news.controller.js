@@ -113,12 +113,39 @@ const getNewAll = async () =>{
 }
 
 const getNewID = async (id, type)=>{
-    if(id){
-        const New = await News.findById(id)
+    
+    if(id && type){
 
-        return New
+        if(type === "meeting"){
+            
+            const meet = await EventsMeet.findById(id)
+            
+            if(meet === null){
+                
+                return "ID no correspondiente al Tipo de Evento entregado. Por favor revisar."
+            
+            }else{
+                return meet
+            }
+
+        } else if(type === "talk"){
+            
+            const talk = await EventsTalk.findById(id)
+            
+            if(talk === null){
+                
+                return "ID no correspondiente al Tipo de Evento entregado. Por favor revisar."
+            
+            }else{
+                return talk
+            }
+
+        }else{
+            return "Tipo inválido. Por favor revisar. Operación cancelada"
+        }
+        
     }else{
-        throw new Error("ID no ingresado, por favor corroborar")
+        throw new Error("ID o Tipo no ingresado, por favor corroborar")
     }
 }
 
@@ -148,9 +175,40 @@ const deleteNew = async (id) =>{
 
 const updateNew = async(id, body) =>{
 
-    await News.findByIdAndUpdate(id, body)
-    
-   return "Evento Actualizado Correctamente"
+    const type = body.type
+
+    if(type === "meeting"){
+
+        let actualizado = await EventsMeet.findByIdAndUpdate(id, body)
+        if(actualizado === null){
+
+            return "Tipo de Evento no correspondiente con el ID mandado, por favor revisar."
+
+        }else{
+                
+            return "Evento Actualizado Correctamente"
+        
+        }
+
+    }else if(type === "talk"){
+
+       let actualizado = await EventsTalk.findByIdAndUpdate(id, body)
+
+        if(actualizado === null){
+
+            return "Tipo de Evento no correspondiente con el ID mandado, por favor revisar."
+
+        }else{
+                
+            return "Evento Actualizado Correctamente"
+        
+        }
+
+        
+
+    }else{
+        return "Tipo de Evento no existente. Por favor revisar."
+    }
 
 }
 
