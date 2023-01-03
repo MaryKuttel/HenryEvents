@@ -1,5 +1,5 @@
 const EventsTalk = require("../models/EventsTalk");
-const EventsMeet = require("../models/EventMeet");
+const EventsMeet = require("../models/EventsMeet");
 
 // ┌────────────────────────────┐
 // │         RUTA POST          │
@@ -9,18 +9,42 @@ const EventsMeet = require("../models/EventMeet");
 const postNew = async (body) =>{
         const {title, description, date, user_event, people_asist, link, comment_meet, type} = body
 
-       const newNew = new News({title,
-        description,
-        date,
-        user_event,
-        people_asist,
-        link,
-        comment_meet})
+        if(type === "meeting"){
+       
+            const newNew = new EventsMeet({title,
+                description,
+                date,
+                user_event,
+                people_asist,
+                link,
+                comment_meet})
+            
+            await newNew.save()
 
-        await newNew.save()
+
+            return "New Meeting Created"
+
+    }else if(type === "talk"){
+        
+        const newNew = new EventsTalk({title,
+            description,
+            date,
+            user_event,
+            people_asist,
+            link,
+            comment_meet})
+
+            await newNew.save()
 
 
-        return "New News Created"
+            return "New Talk Created"
+
+
+    } else{
+        return "Categoría de evento no aceptada. Por favor revisar. Acción Cancelada."
+    }
+
+       
 
 }
 
@@ -32,21 +56,63 @@ const postNew = async (body) =>{
 
 const getNewAll = async () =>{
 
-    const meetings = EventsMeet.find()
-    const talks = EventsTalk.find()
+    const meetings = await EventsMeet.find()
+    const talks = await EventsTalk.find()
 
-    const mapEvent = meetings.map(curr =>{
+    if(meetings && talks){
+
+    const allOfThem = (meetings).concat(talks)
+    
+    const mapEvent = allOfThem.map(curr =>{
         return {
             id: curr.id,
             title: curr.title,
-            date: curr.date
+            date: curr.date,
+            type: curr.type
         }
-    })
+    }) 
 
-    return mapEvent
+    const ordenados = mapEvent.sort((x, y) => x.date - y.date)
+
+    return ordenados
+
+} else if(meetings){
+
+    const mapMeet = meetings.map(curr =>{
+        return {
+            id: curr.id,
+            title: curr.title,
+            date: curr.date,
+            type: curr.type
+        }
+    }) 
+
+    const ordenados = mapMeet.sort((x, y) => x.date - y.date)
+
+    return ordenados
+
+}else if(talks){
+
+    const mapTalk = talks.map(curr =>{
+        return {
+            id: curr.id,
+            title: curr.title,
+            date: curr.date,
+            type: curr.type
+        }
+    }) 
+
+    const ordenados = mapTalk.sort((x, y) => x.date - y.date)
+
+    return ordenados
+
+}
+    
+
+    
 }
 
-const getNewID = async (id)=>{
+const getNewID = async (id, type)=>{
     if(id){
         const New = await News.findById(id)
 
