@@ -5,7 +5,8 @@ const jwt = require("jsonwebtoken")
 
 const router = Router();
 
-const Joi = require("@hapi/joi")
+const Joi = require("@hapi/joi");
+const { updateUser } = require("../controllers/user.controller");
 
 
 const schemaLogin = Joi.object({
@@ -46,6 +47,18 @@ router.post("/login", async (req, res)=>{
     }
 
 
+    // Si usuario tiene eventos favoritos
+
+    // if(userfind.fav_events_meet && userfind.fav_events_talk){
+    //    let favoevents = userfind.fav_events_meet.concat(userfind.fav_events_talk)
+    // }else if(userfind.fav_events_meet){
+    //     let favoevents = userfind.fav_events_meet
+    // }else if(userfind.fav_events_talk){
+    //     let favoevents = userfind.fav_events_talk
+    // }
+
+
+
     // create token
 
     // const token = jwt.sign({
@@ -54,7 +67,15 @@ router.post("/login", async (req, res)=>{
     // }, process.env.TOKEN_SECRETO)
 
 
-    res.status(200).json({mensaje: "Bienvenido!", nickName: userfind.nickName})
+    res.status(200).json({mensaje: "Bienvenido!", user: {
+        id: userfind.id,
+        nickName: userfind.nickName,
+        image: userfind.image,
+        darkMode: userfind.darkMode,
+        fav_events: userfind.fav_events_meet && userfind.fav_events_talk?userfind.fav_events_meet.concat(userfind.fav_events_talk) : userfind.fav_events_meet? userfind.fav_events_meet : userfind.fav_events_talk? userfind.fav_events_talk : "No hay eventos favoritos",
+        admin: userfind.admin
+
+    }})
 
 })
 
@@ -124,12 +145,13 @@ router.post("/register", async (req, res) =>{
 
 
 
-router.get("/", async (req, res)=>{
+router.get("/:id", async (req, res)=>{
 
     try {
-       
-        const users = await User.find()
-        if(users) res.status(200).json(users)
+        
+        const id = req.params.id
+        const user = await User.findById(id)
+        if(user) res.status(200).json(user)
         else res.status(404).json("No se encontraron usuarios")
     
     } catch (error) {
@@ -140,6 +162,25 @@ router.get("/", async (req, res)=>{
     
 
 })
+
+
+router.put("/:id", async (req, res)=>{
+
+    try {
+        
+        const id = req.params.id
+        const body = req.body
+
+        const actualizado = await updateUser(id, body)
+        if(actualizado) res.status(200).json(actualizado)
+        else res.status(404).json("No se encontró el usuario para actualizar")
+
+    } catch (error) {
+        res.status(400).json(error)
+    }
+
+})
+
 
 
 module.exports = {router}
