@@ -32,8 +32,9 @@ const schema = new Schema(
 		admin:{
 			type: Boolean
 		},
-		darkMood:{
-			type: Boolean
+		darkMode:{
+			type: Boolean,
+			default: false
 		},
 		image:{
 			type: String
