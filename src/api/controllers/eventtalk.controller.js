@@ -36,7 +36,8 @@ const getEventTalkAll = async () =>{
         return {
             id: curr.id,
             title: curr.title,
-            date: curr.date
+            date: curr.date,
+            type: curr.type
         }
     })
 

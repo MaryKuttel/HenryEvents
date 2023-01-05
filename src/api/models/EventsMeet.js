@@ -21,7 +21,7 @@ const schema = new Schema(
         people_asist:{
             type: [{
                 type: Schema.Types.ObjectId,
-                reference: "Users"
+                ref: "Users"
             },]
         },
         link:{
@@ -30,7 +30,7 @@ const schema = new Schema(
         comment_meet:{
             type: [{
                 type: Schema.Types.ObjectId,
-                reference: "CommentsMeet"
+                ref: "CommentsMeet"
             },]
         },
         type:{

@@ -1,5 +1,6 @@
 const EventsTalk = require("../models/EventsTalk");
 const EventsMeet = require("../models/EventsMeet");
+const User = require("../models/Users")
 
 // ┌────────────────────────────┐
 // │         RUTA POST          │
@@ -68,7 +69,8 @@ const getNewAll = async () =>{
             id: curr.id,
             title: curr.title,
             date: curr.date,
-            type: curr.type
+            type: curr.type,
+            user_event: curr.user_event
         }
     }) 
 
@@ -83,7 +85,8 @@ const getNewAll = async () =>{
             id: curr.id,
             title: curr.title,
             date: curr.date,
-            type: curr.type
+            type: curr.type,
+            user_event: curr.user_event
         }
     }) 
 
@@ -98,7 +101,8 @@ const getNewAll = async () =>{
             id: curr.id,
             title: curr.title,
             date: curr.date,
-            type: curr.type
+            type: curr.type,
+            user_event: curr.user_event
         }
     }) 
 
@@ -121,25 +125,88 @@ const getNewID = async (id, type)=>{
         if(type === "meeting"){
             
             const meet = await EventsMeet.findById(id)
+                .populate({path: "comment_meet"})
+                
+                const user = await User.findById(meet.user_event)
+
+                
+
+             const newmeet = await Promise.all(meet.comment_meet.map(async curr =>{
+
+                let usuario = await User.findById(curr.user_comment)
+
+                return{
+                    _id: curr._id,
+                    user_comment: usuario.nickName,
+                    comment: curr.comment,
+                    id_event_meet: curr.id_event_meet,
+                    date: curr.date
+                }
+
+             }))
+
+             const newObject = {
+                title: meet.title,
+                date: meet.date,
+                user_event: user.nickName,
+                description:meet.description,
+                people_asist:meet.people_asist,
+                link:meet.link,
+                comment_meet: newmeet,
+                type: meet.type
+        
+             }
+
             
             if(meet === null){
                 
                 return "ID no correspondiente al Tipo de Evento entregado. Por favor revisar."
             
             }else{
-                return meet
+                return newObject
             }
 
         } else if(type === "talk"){
             
             const talk = await EventsTalk.findById(id)
+            .populate({path: "comment_talk"})
+                
+                const user = await User.findById(talk.user_event)
+
+                
+
+             const newtalk = await Promise.all(talk.comment_talk.map(async curr =>{
+
+                let usuario = await User.findById(curr.user_comment)
+
+                return{
+                    _id: curr._id,
+                    user_comment: usuario.nickName,
+                    comment: curr.comment,
+                    id_event_talk: curr.id_event_talk,
+                    date: curr.date
+                }
+
+             }))
+
+             const newObject = {
+                title: talk.title,
+                date: talk.date,
+                user_event: user.nickName,
+                description:talk.description,
+                people_asist:talk.people_asist,
+                link:talk.link,
+                comment_talk: newtalk,
+                type: talk.type
+        
+             }
             
             if(talk === null){
                 
                 return "ID no correspondiente al Tipo de Evento entregado. Por favor revisar."
             
             }else{
-                return talk
+                return newObject
             }
 
         }else{

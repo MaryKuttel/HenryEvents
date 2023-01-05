@@ -45,9 +45,9 @@ router.get("/:id", async (req, res)=>{
 
 router.post("/", async (req, res)=>{
     try {
-        const {title, description, type} = req.body
+        const {title, description, type, user_event} = req.body
 
-        if(!title || !description || !type){
+        if(!title || !description || !type || !user_event){
             res.status(409).json("Falta información requerida, por favor revisar")
         }else{
             res.status(200).json(await postNew(req.body))

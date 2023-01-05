@@ -1,5 +1,6 @@
 const CommentsMeet = require("../models/CommentsMeet");
 const Users = require("../models/Users");
+const EventsMeet = require("../models/EventsMeet")
 
 // ┌────────────────────────────┐
 // │         RUTA POST          │
@@ -12,6 +13,15 @@ const postCommentMeet = async (body) =>{
        const newCommentMeet = new CommentsMeet({id_event_meet, comment, date, user_comment})
 
         await newCommentMeet.save()
+
+        const actualizareveto = await EventsMeet.findByIdAndUpdate(id_event_meet,
+            {
+                $push:{
+                    comment_meet: newCommentMeet._id
+                }         
+
+        },{new: true}
+        )
 
 
         return "New CommentMeet Created"
