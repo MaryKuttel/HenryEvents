@@ -8,7 +8,7 @@ const User = require("../models/Users")
 
 
 const postNew = async (body) =>{
-        const {title, description, date, user_event, people_asist, link, comment_meet, type} = body
+        const {title, description, date, user_event, people_asist, link, comments, type} = body
 
         if(type === "meeting"){
        
@@ -18,7 +18,7 @@ const postNew = async (body) =>{
                 user_event,
                 people_assist,
                 link,
-                comment_meet})
+                comments})
             
             await newNew.save()
 
@@ -33,7 +33,7 @@ const postNew = async (body) =>{
             user_event,
             people_assist,
             link,
-            comment_meet})
+            comments})
 
             await newNew.save()
 
@@ -140,7 +140,7 @@ const getNewID = async (id, type)=>{
 
                 
 
-             const newmeet = await Promise.all(meet.comment_meet.map(async curr =>{
+             const newmeet = await Promise.all(meet.comments.map(async curr =>{
 
                 let usuario = await User.findById(curr.user_comment)
 
@@ -159,7 +159,7 @@ const getNewID = async (id, type)=>{
                 date: meet.date,
                 user_event: user.nickName,
                 description:meet.description,
-                people_assist:meet.people_asist,
+                people_assist:meet.people_assist,
                 link:meet.link,
                 comments: newmeet,
                 type: meet.type
@@ -184,7 +184,7 @@ const getNewID = async (id, type)=>{
 
                 
 
-             const newtalk = await Promise.all(talk.comment_talk.map(async curr =>{
+             const newtalk = await Promise.all(talk.comments.map(async curr =>{
 
                 let usuario = await User.findById(curr.user_comment)
 
@@ -203,7 +203,7 @@ const getNewID = async (id, type)=>{
                 date: talk.date,
                 user_event: user.nickName,
                 description:talk.description,
-                people_assist:talk.people_asist,
+                people_assist:talk.people_assist,
                 link:talk.link,
                 comments: newtalk,
                 type: talk.type
