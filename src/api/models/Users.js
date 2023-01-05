@@ -30,7 +30,8 @@ const schema = new Schema(
             },]
 		},
 		admin:{
-			type: Boolean
+			type: Boolean,
+			default: false
 		},
 		darkMode:{
 			type: Boolean,

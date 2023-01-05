@@ -54,7 +54,7 @@ router.post("/login", async (req, res)=>{
     // }, process.env.TOKEN_SECRETO)
 
 
-    res.status(200).json({mensaje: "Bienvenido!", nickName: userfind.nickName})
+    res.status(200).json({ nickName: userfind.nickName, _id: userfind._id, fav_events_meet: userfind.fav_events_meet, fav_events_talk: userfind.fav_events_talk, darkMode: userfind.darkMode, admin: userfind.admin})
 
 })
 
@@ -95,23 +95,23 @@ router.post("/register", async (req, res) =>{
         
         // configuracion de email
 
-    //     const transport = nodemailer.createTransport({
-    //         service: "Gmail",
-    //         auth: {
-    //             user: process.env.user,
-    //             pass: process.env.pass,
-    //      },
-    // });
+         /* const transport = nodemailer.createTransport({
+             service: "Gmail",
+             auth: {
+                 user: process.env.user,
+                 pass: process.env.pass,
+          },
+         });
 
-    //     let msg = await transport.sendMail({
-    //         to: email,
-    //         subject: "Please confirm your account",
-    //         html: `<h1>Email Confirmation</h1>
-    //             <h2>Hello ${user.nickName}</h2>
-    //             <p>Thank you for register. Please confirm your email by clicking on the following link</p>
-    //             <a href="https://backend-gamematch.herokuapp.com/users/confirm/${user._id}"> Click here</a>
-    //             </div>`,
-    // });
+         let msg = await transport.sendMail({
+             to: email,
+            subject: "Please confirm your account",
+             html: `<h1>Email Confirmation</h1>
+                 <h2>Hello ${user.nickName}</h2>
+                 <p>Thank you for register. Please confirm your email by clicking on the following link</p>
+                 <a href="https://backend-gamematch.herokuapp.com/users/confirm/${user._id}"> Click here</a>
+                 </div>`,
+     }); */
         if(userDB)  res.json(userDB)
         else throw new Error("Usuario ya creado. Logeate!");
 
