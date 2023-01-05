@@ -138,7 +138,11 @@ const getNewID = async (id, type)=>{
                 
                 const user = await User.findById(meet.user_event)
 
-                
+                const author = {
+                    idUser: meet.user_event,
+                    nickName: user.nickName,
+                    image: user.image
+                }
 
              const newmeet = await Promise.all(meet.comments.map(async curr =>{
 
@@ -157,7 +161,7 @@ const getNewID = async (id, type)=>{
              const newObject = {
                 title: meet.title,
                 date: meet.date,
-                user_event: user.nickName,
+                user_event: author,
                 description:meet.description,
                 people_assist:meet.people_assist,
                 link:meet.link,
@@ -184,7 +188,7 @@ const getNewID = async (id, type)=>{
 
                 const author = {
                     idUser: talk.user_event,
-                    author: user.nickName,
+                    nickName: user.nickName,
                     image: user.image
                 }
 
