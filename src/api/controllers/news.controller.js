@@ -182,7 +182,11 @@ const getNewID = async (id, type)=>{
                 
                 const user = await User.findById(talk.user_event)
 
-                
+                const author = {
+                    idUser: talk.user_event,
+                    author: user.nickName,
+                    image: user.image
+                }
 
              const newtalk = await Promise.all(talk.comments.map(async curr =>{
 
@@ -201,7 +205,7 @@ const getNewID = async (id, type)=>{
              const newObject = {
                 title: talk.title,
                 date: talk.date,
-                user_event: user.nickName,
+                user_event: author ,
                 description:talk.description,
                 people_assist:talk.people_assist,
                 link:talk.link,

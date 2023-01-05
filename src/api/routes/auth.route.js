@@ -166,6 +166,10 @@ router.get("/:id", async (req, res)=>{
 router.post("/favoritos", async (req, res)=>{
 
     try {
+
+        let {id_user, id_event, type} = req.body
+
+        
         
     } catch (error) {
         res.status(400).json(error)
