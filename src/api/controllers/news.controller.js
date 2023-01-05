@@ -16,7 +16,7 @@ const postNew = async (body) =>{
                 description,
                 date,
                 user_event,
-                people_asist,
+                people_assist,
                 link,
                 comment_meet})
             
@@ -31,7 +31,7 @@ const postNew = async (body) =>{
             description,
             date,
             user_event,
-            people_asist,
+            people_assist,
             link,
             comment_meet})
 
@@ -134,7 +134,7 @@ const getNewID = async (id, type)=>{
         if(type === "meeting"){
             
             const meet = await EventsMeet.findById(id)
-                .populate({path: "comment_meet"})
+                .populate({path: "comments"})
                 
                 const user = await User.findById(meet.user_event)
 
@@ -159,9 +159,9 @@ const getNewID = async (id, type)=>{
                 date: meet.date,
                 user_event: user.nickName,
                 description:meet.description,
-                people_asist:meet.people_asist,
+                people_assist:meet.people_asist,
                 link:meet.link,
-                comment_meet: newmeet,
+                comments: newmeet,
                 type: meet.type
         
              }
@@ -178,7 +178,7 @@ const getNewID = async (id, type)=>{
         } else if(type === "talk"){
             
             const talk = await EventsTalk.findById(id)
-            .populate({path: "comment_talk"})
+            .populate({path: "comments"})
                 
                 const user = await User.findById(talk.user_event)
 
@@ -203,9 +203,9 @@ const getNewID = async (id, type)=>{
                 date: talk.date,
                 user_event: user.nickName,
                 description:talk.description,
-                people_asist:talk.people_asist,
+                people_assist:talk.people_asist,
                 link:talk.link,
-                comment_talk: newtalk,
+                comments: newtalk,
                 type: talk.type
         
              }
