@@ -1,4 +1,5 @@
 const EventsTalk = require("../models/EventsTalk");
+const User = require("../models/Users")
 
 // ┌────────────────────────────┐
 // │         RUTA POST          │
@@ -32,14 +33,18 @@ const postEventTalk = async (body) =>{
 const getEventTalkAll = async () =>{
     const eventTalk = await EventsTalk.find()
 
-    const mapEvent = eventTalk.map(curr =>{
+    const mapEvent = await Promise.all(eventTalk.map(async curr =>{
+        
+        let user = await User.findById(curr.user_event)
+        
         return {
             id: curr.id,
             title: curr.title,
             date: curr.date,
-            type: curr.type
+            type: curr.type,
+            user_event: user.nickName
         }
-    })
+    }))
 
     return mapEvent
 }

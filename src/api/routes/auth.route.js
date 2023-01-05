@@ -141,5 +141,36 @@ router.get("/", async (req, res)=>{
 
 })
 
+router.get("/:id", async (req, res)=>{
+
+    try {
+
+        const id = req.params.id
+
+        const user = await User.findById(id)
+
+        if(user) res.status(200).json(user)
+        else res.status(404).json("No se encontraro el usuario")
+
+        
+    } catch (error) {
+
+        res.status(400).json(error)
+        
+    }
+
+})
+
+
+
+router.post("/favoritos", async (req, res)=>{
+
+    try {
+        
+    } catch (error) {
+        res.status(400).json(error)
+    }
+
+})
 
 module.exports = {router}

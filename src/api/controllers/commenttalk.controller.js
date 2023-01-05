@@ -1,4 +1,5 @@
 const CommentsTalk = require("../models/CommentsTalk");
+const EventsTalk = require("../models/EventsTalk")
 const Users = require("../models/Users");
 
 // ┌────────────────────────────┐
@@ -10,6 +11,15 @@ const postCommentTalk = async (body) =>{
         const {id_event_talk,comment, date, user_comment} = body
 
        const newCommentTalk = new CommentsTalk({id_event_talk, comment, date, user_comment})
+
+       const actualizareveto = await EventsTalk.findByIdAndUpdate(id_event_meet,
+        {
+            $push:{
+                comment_talk: newCommentTalk._id
+            }         
+
+    },{new: true}
+    )
 
         await newCommentTalk.save()
 

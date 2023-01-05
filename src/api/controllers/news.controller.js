@@ -64,15 +64,18 @@ const getNewAll = async () =>{
 
     const allOfThem = (meetings).concat(talks)
     
-    const mapEvent = allOfThem.map(curr =>{
+    const mapEvent = await Promise.all(allOfThem.map(async curr =>{
+
+        let user = await User.findById(curr.user_event)
+
         return {
             id: curr.id,
             title: curr.title,
             date: curr.date,
             type: curr.type,
-            user_event: curr.user_event
+            user_event: user.nickName
         }
-    }) 
+    })) 
 
     const ordenados = mapEvent.sort((x, y) => x.date - y.date)
 
@@ -80,7 +83,10 @@ const getNewAll = async () =>{
 
 } else if(meetings){
 
-    const mapMeet = meetings.map(curr =>{
+    const mapMeet = await Promise.all(meetings.map(async curr =>{
+
+        let user = await User.findById(curr.user_event)
+
         return {
             id: curr.id,
             title: curr.title,
@@ -88,7 +94,7 @@ const getNewAll = async () =>{
             type: curr.type,
             user_event: curr.user_event
         }
-    }) 
+    })) 
 
     const ordenados = mapMeet.sort((x, y) => x.date - y.date)
 
@@ -96,7 +102,10 @@ const getNewAll = async () =>{
 
 }else if(talks){
 
-    const mapTalk = talks.map(curr =>{
+    const mapTalk = await Promise.all(talks.map(async curr =>{
+        
+        let user = await User.findById(curr.user_event)
+        
         return {
             id: curr.id,
             title: curr.title,
@@ -104,7 +113,7 @@ const getNewAll = async () =>{
             type: curr.type,
             user_event: curr.user_event
         }
-    }) 
+    })) 
 
     const ordenados = mapTalk.sort((x, y) => x.date - y.date)
 

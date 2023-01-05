@@ -1,4 +1,5 @@
 const EventsMeet = require("../models/EventsMeet");
+const User = require("../models/Users")
 
 // ┌────────────────────────────┐
 // │         RUTA POST          │
@@ -30,14 +31,18 @@ const postEventMeet = async (body) =>{
 const getEventMeetAll = async () =>{
     const eventmeet = await EventsMeet.find()
 
-    const mapEvent = eventmeet.map(curr =>{
+    const mapEvent = await Promise.all(eventmeet.map(async curr =>{
+
+        let user = await User.findById(curr.user_event)
+
         return {
             id: curr.id,
             title: curr.title,
             date: curr.date,
-            type: curr.type
+            type: curr.type,
+            user_event: user.nickName
         }
-    })
+    }))
 
     return mapEvent
 }
