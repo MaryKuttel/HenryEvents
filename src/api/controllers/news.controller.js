@@ -77,7 +77,7 @@ const getNewAll = async () =>{
         }
     })) 
 
-    const ordenados = mapEvent.sort((x, y) => x.date - y.date)
+    const ordenados = mapEvent.sort((x, y) => y.date - x.date)
 
     return ordenados
 
@@ -96,7 +96,7 @@ const getNewAll = async () =>{
         }
     })) 
 
-    const ordenados = mapMeet.sort((x, y) => x.date - y.date)
+    const ordenados = mapMeet.sort((x, y) => y.date - x.date)
 
     return ordenados
 
@@ -115,7 +115,7 @@ const getNewAll = async () =>{
         }
     })) 
 
-    const ordenados = mapTalk.sort((x, y) => x.date - y.date)
+    const ordenados = mapTalk.sort((x, y) => y.date - x.date)
 
     return ordenados
 

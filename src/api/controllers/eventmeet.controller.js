@@ -44,7 +44,9 @@ const getEventMeetAll = async () =>{
         }
     }))
 
-    return mapEvent
+    const ordenados = mapEvent.sort((x, y) => y.date - x.date)
+
+    return ordenados
 }
 
 const getEventMeetID = async (id)=>{
