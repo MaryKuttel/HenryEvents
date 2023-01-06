@@ -158,12 +158,24 @@ const getNewID = async (id, type)=>{
 
              }))
 
+             const people = await Promise.all(meet.people_assist.map(async curr =>{
+
+                let assist = await User.findById(curr)
+
+                return{
+                    idUser: assist._id,
+                    nickName: assist.nickName,
+                    image: assist.image
+                }
+
+             }))
+
              const newObject = {
                 title: meet.title,
                 date: meet.date,
                 user_event: author,
                 description:meet.description,
-                people_assist:meet.people_assist,
+                people_assist: people,
                 link:meet.link,
                 comments: newmeet,
                 type: meet.type
@@ -182,7 +194,7 @@ const getNewID = async (id, type)=>{
         } else if(type === "talk"){
             
             const talk = await EventsTalk.findById(id)
-            .populate({path: "comments"})
+                            .populate({path: "comments"})
                 
                 const user = await User.findById(talk.user_event)
 
@@ -206,12 +218,24 @@ const getNewID = async (id, type)=>{
 
              }))
 
+             const people = await Promise.all(talk.people_assist.map(async curr =>{
+
+                let assist = await User.findById(curr)
+
+                return{
+                    idUser: assist._id,
+                    nickName: assist.nickName,
+                    image: assist.image
+                }
+
+             }))
+
              const newObject = {
                 title: talk.title,
                 date: talk.date,
-                user_event: author ,
+                user_event: author,
                 description:talk.description,
-                people_assist:talk.people_assist,
+                people_assist: people,
                 link:talk.link,
                 comments: newtalk,
                 type: talk.type
@@ -319,10 +343,85 @@ const updateNew = async(id, body) =>{
 }
 
 
+
+const cargarFavoritos = async (id_user, id_event, type)=>{
+
+    if(type === "meeting"){
+
+        const actualizarFavs = await User.findByIdAndUpdate(id_user,
+            {
+                $push:{
+                    fav_events_meet: id_event
+                }         
+
+        },{new: true}
+        )
+
+        if(actualizarFavs) return "Evento añadido a favoritos correctamente"
+
+    }else if(type === "talk"){
+
+        const actualizarFavs = await User.findByIdAndUpdate(id_user,
+            {
+                $push:{
+                    fav_events_talk: id_event
+                }         
+
+        },{new: true}
+        )
+
+        if(actualizarFavs) return "Evento añadido a favoritos correctamente"
+
+    }else{
+       return "Error en el tipo de evento, revisar."
+    }
+
+
+}
+
+const peopleAsist = async (id_user, id_event, type)=>{
+
+
+    if(type === "meeting"){
+
+
+        const actualizarGente = await EventsMeet.findByIdAndUpdate(id_event,
+            {
+                $push:{
+                    people_assist: id_user
+                }         
+
+        },{new: true}
+        )
+
+        if(actualizarGente) return "Usuario añadido a asistencia correctamente"
+
+    }else if(type === "talk"){
+
+        const actualizarGente = await EventsTalk.findByIdAndUpdate(id_event,
+            {
+                $push:{
+                    people_assist: id_user
+                }         
+
+        },{new: true}
+        )
+        if(actualizarGente) return "Usuario añadido a asistencia correctamente"
+
+    }else{
+       return "Error en el tipo de evento, revisar."
+    }
+
+
+}
+
+
 module.exports = {
     postNew,
     getNewAll,
     getNewID,
     deleteNew,
-    updateNew
+    updateNew,
+    cargarFavoritos,
+    peopleAsist
 }

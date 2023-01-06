@@ -1,7 +1,7 @@
 
 const {Router} = require("express");
 
-const {postNew, getNewAll, deleteNew, updateNew, getNewID} = require("../controllers/news.controller")
+const {postNew, getNewAll, deleteNew, updateNew, getNewID, peopleAsist} = require("../controllers/news.controller")
 
 
 const router = Router();
@@ -90,6 +90,32 @@ router.put("/:id", async (req, res)=>{
     } catch (error) {
         res.status(500).json(error)
     }
+})
+
+router.put("/:id/people", async (req, res)=>{
+
+    try {
+
+        let id_event = req.params.id
+        let {id_user, type} = req.body
+
+        if(!id_user || !type || !id_event){
+            res.status(409).json("Falta información requerida")
+
+        }else{
+            
+            const asist = await peopleAsist(id_user, id_event, type)
+    
+            if(asist) res.status(200).json(asist)
+            else res.status(400).json("Error en la función")
+        }
+
+
+        
+    } catch (error) {
+        res.status(400).json(error)
+    }
+
 })
 
 module.exports = {router}

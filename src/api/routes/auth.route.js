@@ -2,10 +2,16 @@ const {Router} = require("express");
 const User = require("../models/Users")
 const bcrypt = require('bcrypt')
 const jwt = require("jsonwebtoken")
+const { cargarFavoritos } = require("../controllers/news.controller");
+
+
 
 const router = Router();
 
-const Joi = require("@hapi/joi")
+const Joi = require("@hapi/joi");
+const EventsMeet = require("../models/EventsMeet");
+const EventsTalk = require("../models/EventsTalk");
+
 
 
 const schemaLogin = Joi.object({
@@ -149,7 +155,50 @@ router.get("/:id", async (req, res)=>{
 
         const user = await User.findById(id)
 
-        if(user) res.status(200).json(user)
+        if(user) {
+
+            let favmeets = await Promise.all(user.fav_events_meet.map(async curr =>{
+                let event = await EventsMeet.findById(curr)
+
+                return{
+                    idEvent : event._id,
+                    title: event.title,
+                    date: event.date,
+                    type: event.type
+                }
+
+            }))
+
+            
+
+            let favtalks = await Promise.all(user.fav_events_talk.map(async curr =>{
+                let event = await EventsTalk.findById(curr)
+
+                return{
+                    idEvent : curr,
+                    title: event.title,
+                    date: event.date,
+                    type: event.type
+                }
+
+            }))
+            
+            
+           let concat = favmeets.concat(favtalks)
+            
+            
+            const objectDevol = {
+                _id:  user._id,
+                nickName: user.nickName,
+                fav_events: concat,
+                darkMode: user.darkMode,
+                admin: user.admin
+            }
+
+            res.status(200).json(objectDevol)
+        
+        
+        }
         else res.status(404).json("No se encontraro el usuario")
 
         
@@ -168,6 +217,15 @@ router.post("/favoritos", async (req, res)=>{
     try {
 
         let {id_user, id_event, type} = req.body
+
+        if(!id_user || !id_event || !type){
+            res.status(400).json("Falta información requerida")
+        }else{
+            
+            const cargaFavs = await cargarFavoritos(id_user, id_event, type)
+            if(cargaFavs) res.status(200).json(cargaFavs)
+            else res.status(404).json("No se ha encontrado la función")
+        }
 
         
         
